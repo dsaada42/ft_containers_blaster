@@ -6,7 +6,7 @@
 #    By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 09:36:39 by dsaada            #+#    #+#              #
-#    Updated: 2023/01/03 10:55:28 by dsaada           ###   ########.fr        #
+#    Updated: 2023/01/03 14:02:45 by dsaada           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,20 @@ CC = c++
 
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-VECTOR_TEST_FILES = $(wildcard ./tests/vector/*.cpp)
-MAP_TEST_FILES = $(wildcard ./tests/map/*.cpp)
-STACK_TEST_FILES = $(wildcard ./tests/stack/*.cpp)
-SET_TEST_FILES = $(wildcard ./tests/set/*.cpp)
+vector :
+	@./run_tests.sh test_container vector
 
-vector : $(VECTOR_TEST_FILES)
-	@./run_vector_tests.sh $(VECTOR_TEST_FILES)
+stack :
+	@./run_tests.sh test_container stack
 	
-all : vector
+map :
+	@./run_tests.sh test_container map
+
+set :
+	@./run_tests.sh test_container set
+
+all :
+	@./run_tests.sh test_containers
 
 clean :
 	@rm -rf logs
