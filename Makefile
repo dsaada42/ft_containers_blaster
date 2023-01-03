@@ -6,14 +6,13 @@
 #    By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 09:36:39 by dsaada            #+#    #+#              #
-#    Updated: 2023/01/03 14:02:45 by dsaada           ###   ########.fr        #
+#    Updated: 2023/01/03 15:16:46 by dsaada           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = c++
-
-CFLAGS = -Wall -Wextra -Werror -std=c++98
-
+all :
+	@./run_tests.sh test_containers
+	
 vector :
 	@./run_tests.sh test_container vector
 
@@ -26,9 +25,6 @@ map :
 set :
 	@./run_tests.sh test_container set
 
-all :
-	@./run_tests.sh test_containers
-
 clean :
 	@rm -rf logs
 	@rm -rf diffs
@@ -37,4 +33,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY: all vector clean fclean re
+.PHONY: all vector stack set map clean fclean re

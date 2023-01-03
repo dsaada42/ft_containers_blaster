@@ -25,7 +25,6 @@ run_test() {
     test_name=$2
     file=$3
 
-    echo -e "executing $container test $2"
     #__ Test for ft __
     if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=ft -o ${file%.*} $file; then
         if ! ${file%.*} > ./logs/$1/ft/${test_name}.log; then
@@ -87,7 +86,7 @@ test_containers() {
 
     containers="vector stack map set"
 
-    for i in containers
+    for i in $containers;
     do
         test_container $i
     done

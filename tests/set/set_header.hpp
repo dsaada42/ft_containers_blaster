@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constructor.cpp                                    :+:      :+:    :+:   */
+/*   set_header.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/03 09:43:34 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/03 15:02:31 by dsaada           ###   ########.fr       */
+/*   Created: 2023/01/03 15:14:45 by dsaada            #+#    #+#             */
+/*   Updated: 2023/01/03 15:14:57 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector_header.hpp"
+#ifndef SET_HEADER_HPP
+# define SET_HEADER_HPP
 
-int main (void){
-    
-    {
-        strvector my_vector;
-        
-        PRINT_VECTOR(my_vector);
-    }
-    return (0);
-}
+# include "../header.hpp"
+# include "set.hpp"
+# include <set>
+
+#endif

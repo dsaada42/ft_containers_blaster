@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   constructor.cpp                                    :+:      :+:    :+:   */
+/*   stack_header.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/03 09:43:34 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/03 15:02:31 by dsaada           ###   ########.fr       */
+/*   Created: 2023/01/03 15:13:44 by dsaada            #+#    #+#             */
+/*   Updated: 2023/01/03 15:14:34 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector_header.hpp"
+#ifndef STACK_HEADER_HPP
+# define STACK_HEADER_HPP
 
-int main (void){
-    
-    {
-        strvector my_vector;
-        
-        PRINT_VECTOR(my_vector);
-    }
-    return (0);
-}
+# include "../header.hpp"
+# include "stack.hpp"
+# include <stack>
+
+#endif
