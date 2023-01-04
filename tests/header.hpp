@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:36:57 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/03 15:12:17 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/04 16:38:57 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,23 @@
 # include <string>
 # include <iostream>
 # include <sstream>
+# include "../srcs/allocator_tracker.hpp"
+# include "../srcs/leak_checker.hpp"
 
 # define PRINT_FILE_LINE(){                                                             \
-    std::cout << "(file: " << __FILE__ << ", line: " << __LINE__ << ")" << STD::endl;   \
+    std::cout << "(file: " << __FILE__ << ", line: " << __LINE__ << ")" << std::endl;   \
 }
 
-# define CATCH_EXCEPTION(){                     \
+# define PRINT_LINE(str, val){          \
+    std::cout << str << " " << (val);   \
+    PRINT_FILE_LINE();                  \
+}
+
+# define CATCH_EXCEPTION()                      \
     catch (...){                                \
         std::cout << "Exception not handled";   \
         PRINT_FILE_LINE();                      \
     }                                           \
-}
 
 template <class Iterator>
 void print_range(Iterator first, Iterator last){    \
@@ -37,6 +43,15 @@ void print_range(Iterator first, Iterator last){    \
         std::cout << *it << " ";                    \
     }                                               \
     std::cout << std::endl;                         \
+}
+
+template <typename ForwardIt, typename T>
+void iota(ForwardIt first, ForwardIt last, T value = T())
+{
+    while (first != last) {
+        *first++ = value;
+        ++value;
+    }
 }
 
 #endif

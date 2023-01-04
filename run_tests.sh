@@ -67,12 +67,13 @@ run_test() {
     container=$1
     test_name=$2
     file=$3
-    debug=$4
-
+    # debug=$4
+    debug="true"
+    
     if [ "$debug" = true ]; then
         #__ Test for ft and std__
         for namespace in ft std; do
-            if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file; then
+            if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file srcs/memory_tracker.cpp srcs/leak_checker.cpp; then
                 if ! ${file%.*} > ./logs/$1/$namespace/${test_name}.log; then
                     print_fail "$1 ${test_name}"
                     return
@@ -85,8 +86,8 @@ run_test() {
         done
     else
         #__ Test for ft and std__
-        for namespace in ft std; do
-            if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file 2> /dev/null; then
+        for namespace in std ft; do
+            if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file srcs/memory_tracker.cpp srcs/leak_checker.cpp 2> /dev/null; then
                 if ! ${file%.*} > ./logs/$1/$namespace/${test_name}.log; then
                     print_fail "$1 ${test_name}"
                     return
