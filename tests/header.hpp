@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:36:57 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/04 16:38:57 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:21:18 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <string>
 # include <iostream>
 # include <sstream>
+# include <limits>
+# include <list>
+# include <algorithm>
 # include "../srcs/allocator_tracker.hpp"
 # include "../srcs/leak_checker.hpp"
 
@@ -29,6 +32,11 @@
 # define PRINT_LINE(str, val){          \
     std::cout << str << " " << (val);   \
     PRINT_FILE_LINE();                  \
+}
+
+# define PRINT_MSG(str){            \
+    std::cout << str;               \
+    PRINT_FILE_LINE()               \
 }
 
 # define CATCH_EXCEPTION()                      \

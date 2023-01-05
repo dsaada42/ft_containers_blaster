@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterators.cpp                                      :+:      :+:    :+:   */
+/*   reverse_iterators.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/03 15:23:10 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/05 11:23:08 by dsaada           ###   ########.fr       */
+/*   Created: 2023/01/05 11:40:50 by dsaada            #+#    #+#             */
+/*   Updated: 2023/01/05 11:44:39 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector_header.hpp"
 
-int main (void){
+int main ( void)
+{
     SETUP_ARRAYS();
 
-//----- Iterators + operations -----
+//----- Reverse Iterators + operations -----
     {
         intvector v1;
         const intvector v2;
-
-        if (v1.begin() != v1.end())
+        if (v1.rbegin() != v1.rend())
             PRINT_MSG("Iterator error");
-        intvector::const_iterator it = v2.begin();
-        if (it != v2.end())
+        intvector::const_reverse_iterator it = v2.rbegin();
+        if (it != v2.rend())
             PRINT_MSG("Iterator error");
     }
     {
         intvector v(b_int, b_int + b_size);
-        intvector::iterator it1 = v.begin();
-        intvector::iterator it2 = it1;
+        intvector::reverse_iterator it1 = v.rbegin();
+        intvector::reverse_iterator it2 = it1;
 
         PRINT_LINE("It1:", *it1);
         PRINT_LINE("It2:", *it2);
-        it1 = v.begin() + 9;
+        it1 = v.rbegin() + 9;
         PRINT_LINE("It1:", *it1);
-        it1 = v.end() - 1;
+        it1 = v.rend() - 1;
         PRINT_LINE("It1:", *it1);
         it2 = it1;
         PRINT_LINE("It2:", *it2);
@@ -44,14 +44,18 @@ int main (void){
     }
     {
         strvector v(b_string, b_string + b_size);
-        strvector::iterator it = v.begin();
-        strvector::const_iterator cit = v.begin() + 34;
+        strvector::reverse_iterator it = v.rbegin();
+        strvector::const_reverse_iterator cit = v.rbegin() + 34;
 
         PRINT_LINE("It:", *it);
         PRINT_LINE("Cit:", *cit);
         it->clear();
         PRINT_LINE("Cstr:", cit->c_str());
         CHECK_AND_PRINT_VECTOR(v);
+        ++it;
+        ++it;
+        ++it;
+        ++it;
         ++it;
         ++it;
         ++it;
@@ -83,12 +87,12 @@ int main (void){
         PRINT_LINE("It:", *(it + 6));
         PRINT_LINE("It:", *(42 + it));
         PRINT_LINE("It:", *(42 + it - 3));
-        PRINT_LINE("It:", *(v.end() - 6));
+        PRINT_LINE("It:", *(v.rend() - 6));
         PRINT_LINE("Cit:", *(cit - 6));
         PRINT_LINE("Cit:", *(cit + 7));
-        PRINT_LINE("Size:", v.end() - v.begin());
-        it = v.begin() + 25;
-        cit = v.begin() + 25;
+        PRINT_LINE("Size:", v.rend() - v.rbegin());
+        it = v.rbegin() + 25;
+        cit = v.rbegin() + 25;
         PRINT_LINE("It:", *it);
         PRINT_LINE("Cit:", *cit);
         it += 12;
@@ -116,22 +120,21 @@ int main (void){
     }
     {
         intvector v(s_int, s_int + s_size);
-        intvector::iterator it = v.begin();
-        intvector::const_iterator cit(it);
+        intvector::reverse_iterator it = v.rbegin();
+        intvector::const_reverse_iterator cit(it);
         (void)cit;
     }
-//----- Iterators + comparisons -----
+//----- Reverse iterators comparisons -----
     {
         intvector v(b_int, b_int + b_size);
+        intvector::reverse_iterator it = v.rbegin();
+        intvector::reverse_iterator it2 = v.rbegin();
+        intvector::const_reverse_iterator cit = v.rbegin();
+        intvector::const_reverse_iterator cit2 = v.rbegin();
 
-        intvector::iterator it = v.begin();
-        intvector::iterator it2 = v.begin();
-        intvector::const_iterator cit = v.begin();
-        intvector::const_iterator cit2 = v.begin();
-
-        if (it == v.begin())
+        if (it == v.rbegin())
             PRINT_MSG("Equal iterators")
-        if (cit == v.begin())
+        if (cit == v.rbegin())
             PRINT_MSG("Equal const iterators")
         if (cit == it)
             PRINT_MSG("Equal const iterators.")
@@ -139,13 +142,12 @@ int main (void){
         ++it;
         cit += 6;
 
-        if (it != v.end())
+        if (it != v.rend())
             PRINT_MSG("Not Equal iterators")
-        if (cit != v.end())
+        if (cit != v.rend())
             PRINT_MSG("Not Equal const iterators")
         if (cit != it)
             PRINT_MSG("Not Equal const iterators.")
-
         if (it < it + 1)
             PRINT_MSG("Less than")
         if (it + 1 < it)
@@ -162,7 +164,6 @@ int main (void){
             PRINT_MSG("Less than.....")
         if (it2 < cit2)
             PRINT_MSG("Less than......")
-
         if (it <= it + 1)
             PRINT_MSG("Less than or equal")
         if (it + 1 <= it)
@@ -179,7 +180,6 @@ int main (void){
             PRINT_MSG("Less than or equal......")
         if (it2 <= cit2)
             PRINT_MSG("Less than or equal.......")
-
         if (it > it + 1)
             PRINT_MSG("Greater than")
         if (it + 1 > it)
@@ -196,7 +196,6 @@ int main (void){
             PRINT_MSG("Greater than.....")
         if (it2 > cit2)
             PRINT_MSG("Greater than......")
-
         if (it >= it + 1)
             PRINT_MSG("Greater than or equal")
         if (it + 1 >= it)

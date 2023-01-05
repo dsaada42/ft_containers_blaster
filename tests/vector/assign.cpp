@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:23:38 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/04 16:35:28 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/05 10:42:23 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int main (void){
         CHECK_AND_PRINT_VECTOR(v);
     }
     {
-        // This test checks if vector works with iterators tagged as std::input_iterator_tag
         charvector v;
         std::istringstream str("1 2 3 4 5 6 7");
         std::istreambuf_iterator<char> it(str), end;
@@ -91,7 +90,6 @@ int main (void){
         v.assign(s_string, s_string + s_size);
         CHECK_AND_PRINT_VECTOR(v);
     }
-
     {
         doublevector v;
         v.assign(b_double, b_double + b_size);

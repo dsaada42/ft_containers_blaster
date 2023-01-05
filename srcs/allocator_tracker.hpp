@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 10:18:55 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/04 15:52:56 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:58:23 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@ class track_allocator{
         };
         
         track_allocator()                                           {}
-        track_allocator(const track_allocator & x)                  {(void)x;}
+        track_allocator(const track_allocator &)                    {}
         template <typename U>
-        track_allocator(const track_allocator<U> & x)               { (void)x;}
+        track_allocator(const track_allocator<U> &)                 {}
         ~track_allocator()                                          {}
 
+        bool operator==(const track_allocator&)                     { return true; }
+        bool operator!=(const track_allocator&)                     { return false; }
         pointer         address(reference x) const                  { return (&x); }
         const_pointer   address(const_reference x)                  { return (&x); }
     //----- ALLOCATE ----- 

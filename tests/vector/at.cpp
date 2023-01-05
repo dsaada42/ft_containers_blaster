@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:23:36 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/04 14:32:50 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/05 10:43:11 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ int main (void){
         }
         CATCH_EXCEPTION();
     }
-
     {
         intvector v(99, 64);
 
@@ -39,7 +38,6 @@ int main (void){
         }
         CATCH_EXCEPTION();
     }
-
     {
         longvector v;
 
@@ -52,7 +50,6 @@ int main (void){
         }
         CATCH_EXCEPTION();
     }
-
     {
         const charvector v(64, 'a');
 
@@ -65,7 +62,6 @@ int main (void){
         }
         CATCH_EXCEPTION();
     }
-
     {
         const intvector v(99, 64);
 
@@ -78,7 +74,6 @@ int main (void){
         }
         CATCH_EXCEPTION();
     }
-
     {
         const longvector v;
 
@@ -91,4 +86,5 @@ int main (void){
         }
         CATCH_EXCEPTION();
     }
+    leak_checker::check_all();
 }

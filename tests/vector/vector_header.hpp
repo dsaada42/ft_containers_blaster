@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:19:53 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/04 16:32:03 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/05 11:01:50 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #define PRINT_VECTOR(vector){                                       \
     std::cout << "********* VECTOR *********\n";                    \
     std::cout << " size     = " << vector.size() << "\n";           \
-    std::cout << " capacity = " << vector.capacity() << "\n";       \
     std::cout << "___ Elements ___\n";                              \
     print_range(vector.begin(), vector.end());                      \
 }
