@@ -6,18 +6,18 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:31:43 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/06 09:19:42 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/06 14:33:30 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "set_header.hpp"
 
 int main (void) {
-    SETUP_ARRAYS();
+    SETUP_SET_ARRAYS();
 
 //----- Erase ----
     {
-        intset m(s_int, s_int + s_size);
+        intset m(int_arr, int_arr + 25);
         intset::iterator it = m.begin();
         m.erase(it);
         PRINT_ALL(m);
@@ -53,7 +53,7 @@ int main (void) {
         PRINT_LINE("Erased?:", size);
     }
     {
-        intset m(s_int, s_int + s_size);
+        intset m(int_arr, int_arr + 16);
         intset::size_type size = m.erase(64);
         PRINT_LINE("Erased?:", size);
         m.erase(m.begin(), m.end());
@@ -159,12 +159,12 @@ int main (void) {
         strset m;
         m.erase(m.begin(), m.end());
         PRINT_ALL(m);
-        m.insert(s_string, s_string + s_size);
+        m.insert(str_arr, str_arr + str_size);
         m.erase(m.begin(), m.end());
         PRINT_ALL(m);
     }
     {
-        intset m(s_int, s_int + s_size);
+        intset m(int_arr, int_arr + int_size);
         intset::iterator it(m.begin());
         intset::iterator end(it);
         std::advance(end, 1);

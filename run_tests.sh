@@ -43,6 +43,7 @@ print_fail() {
     printf "|${RED}%-*s${EOC}|${GREEN}${BOLD}%-*s${EOC}|${RED}${BOLD}%-*s${EOC}|\n" \
         $field1 "$1" $field2 "OK" $field3 "KO"
 }
+
 print_error_compile() {
     columns=$(tput cols)
     field1=$(($columns * 80 / 100 - 1 ))
@@ -52,6 +53,7 @@ print_error_compile() {
     printf "|${RED}%-*s${EOC}|${RED}${BOLD}%-*s${EOC}|${RED}${BOLD}%-*s${EOC}|\n" \
         $field1 "$1" $field2 "KO" $field3 "KO"
 }
+
 print_success() {
     columns=$(tput cols)
     field1=$(($columns * 80 / 100 - 1 ))
@@ -62,55 +64,132 @@ print_success() {
         $field1 "$1" $field2 "OK" $field3 "OK"
 }
 
-#----- Executes one test -----
-run_test() {
+compile() {
+    # 1=file 2={ft/std} 3=output_file 4?=compile_log
+	compile_cmd="${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=${2} -o ${3} ${1} srcs/memory_tracker.cpp srcs/leak_checker.cpp"
+	# if not debug mode?
+    if [ -n "$4" ]; then
+		compile_cmd+=" &>${4}"
+	fi
+	eval "${compile_cmd}"
+	return $?
+}
+
+print_elapsed_time() {
+    #$1 = ft elapsed time
+    #$2 = std elapsed time
+    columns=$(tput cols)
+    printf "| Ft_elapsed_time: %s  | Std_elapsed_time: %s |\n" $1 $2   
+}
+
+# ----- Run one test -----
+run_one_test(){
     container=$1
     test_name=$2
     file=$3
-    # debug=$4
-    debug="true"
-    
-    if [ "$debug" = true ]; then
-        #__ Test for ft and std__
-        for namespace in ft std; do
-            if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file srcs/memory_tracker.cpp srcs/leak_checker.cpp; then
-                if ! ${file%.*} > ./logs/$1/$namespace/${test_name}.log; then
-                    print_fail "$1 ${test_name}"
-                    return
-                fi
-            else
-                print_error_compile "$container $test_name"
-                return
-            fi
-            rm ${file%.*}
-        done
-    else
-        #__ Test for ft and std__
-        for namespace in std ft; do
-            if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file srcs/memory_tracker.cpp srcs/leak_checker.cpp 2> /dev/null; then
-                if ! ${file%.*} > ./logs/$1/$namespace/${test_name}.log; then
-                    print_fail "$1 ${test_name}"
-                    return
-                fi
-            else
-                print_error_compile "$container $test_name"
-                return
-            fi
-            rm ${file%.*}
-        done
-    fi
+    debug=$4
 
-    #__ Diff file __
+	ft_bin="ft.$container.out"; 
+    ft_log="logs/$container/ft/$test_name.log"
+	std_bin="std.$container.out";
+    std_log="logs/$container/std/$test_name.log"
+
+	# Launch async compilations for ft/std binaries
+	compile "$3" "ft"  "$ft_bin" & ft_pid=$!;
+	compile "$3" "std" "$std_bin" & std_pid=$!;
+
+    # ----- wait for compilation to finish -----
+	wait ${ft_pid}; ft_ret=$?;
+	wait ${std_pid}; std_ret=$?;
+
+	> $ft_log; > $std_log;
+	# Starting async binaries execution (if compilation succeeded)
+	if [ ${ft_ret} -eq 0 ]; then
+        ft_start_time=$(date +%s%N);
+		./${ft_bin} &>${ft_log} &
+		ft_pid=$!;
+	fi
+	if [ ${std_ret} -eq 0 ]; then
+        std_start_time=$(date +%s%N);
+        ./${std_bin} &>${std_log} &
+		std_pid=$!;
+	fi
+
+	# Waiting binaries execution (if compilation succeeded)
+	if [ "${ft_ret}" -eq 0 ]; then
+		wait ${ft_pid}; 
+        ft_ret=$?;
+        ft_elapsed_time=$((($(date +%s%N) - $ft_start_time)/1000000));
+	fi
+	if [ "${std_ret}" -eq 0 ]; then
+        std_elapsed_time=$((($(date +%s%N) - $std_start_time)/1000000));
+		wait ${std_pid};
+        std_ret=$?;
+	fi
+
+	#__ Diff file __
     diff_file="./diffs/$1/${test_name}.diff"
-    diff -u ./logs/$1/ft/${test_name}.log ./logs/$1/std/${test_name}.log > $diff_file
+    diff -u $ft_log $std_log > $diff_file
     res=$(cat $diff_file | wc -l)
     if [ $res -ne "0" ]; then
         print_fail "$container $test_name"
     else
         print_success "$container $test_name"
+        print_elapsed_time $ft_elapsed_time $std_elapsed_time
         rm -f $diff_file
     fi
+
+    rm $ft_bin
+    rm $std_bin
 }
+# #----- Executes one test -----
+# run_test() {
+#     container=$1
+#     test_name=$2
+#     file=$3
+#     debug=$4
+    
+#     if [ "$debug" = true ]; then
+#         #__ Test for ft and std__
+#         for namespace in ft std; do
+#             if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file srcs/memory_tracker.cpp srcs/leak_checker.cpp; then
+#                 if ! ${file%.*} > ./logs/$1/$namespace/${test_name}.log; then
+#                     print_fail "$1 ${test_name}"
+#                     return
+#                 fi
+#             else
+#                 print_error_compile "$container $test_name"
+#                 return
+#             fi
+#             rm ${file%.*}
+#         done
+#     else
+#         #__ Test for ft and std__
+#         for namespace in std ft; do
+#             if ${CXX} ${CXXFLAGS} ${INCLUDES} -DNAMESPACE=$namespace -o ${file%.*} $file srcs/memory_tracker.cpp srcs/leak_checker.cpp 2> /dev/null; then
+#                 if ! ${file%.*} > ./logs/$1/$namespace/${test_name}.log; then
+#                     print_fail "$1 ${test_name}"
+#                     return
+#                 fi
+#             else
+#                 print_error_compile "$container $test_name"
+#                 return
+#             fi
+#             rm ${file%.*}
+#         done
+#     fi
+
+#     #__ Diff file __
+#     diff_file="./diffs/$1/${test_name}.diff"
+#     diff -u ./logs/$1/ft/${test_name}.log ./logs/$1/std/${test_name}.log > $diff_file
+#     res=$(cat $diff_file | wc -l)
+#     if [ $res -ne "0" ]; then
+#         print_fail "$container $test_name"
+#     else
+#         print_success "$container $test_name"
+#         rm -f $diff_file
+#     fi
+# }
 
 #----- For a given container executes tests for ft and std -----
 test_container() {
@@ -132,7 +211,8 @@ test_container() {
     for file in $files
     do 
         test_name=$(basename ${file%.*})
-        run_test $1 $test_name $file
+        # run_test $1 $test_name $file
+        run_one_test $1 $test_name $file
     done        
 }
 
