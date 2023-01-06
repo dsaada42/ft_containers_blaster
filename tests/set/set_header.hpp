@@ -6,7 +6,7 @@
 /*   By: dsaada <dsaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 15:14:45 by dsaada            #+#    #+#             */
-/*   Updated: 2023/01/06 10:04:38 by dsaada           ###   ########.fr       */
+/*   Updated: 2023/01/06 10:51:26 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <set>
 
 #define PRINT_SET(set){                                           \
-    std::cout << "==================== VECTOR ====================\n";  \
+    std::cout << "==================== SET ====================\n";  \
     std::cout << " size     = " << set.size() << "\n";               \
     std::cout << "___ Elements ___\n";                                  \
     print_range(set.begin(), set.end());                          \
