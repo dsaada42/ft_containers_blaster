@@ -41,7 +41,7 @@ print_fail() {
     field3=$(($columns * 10 / 100 - 1 ))
 
     printf "|${RED}%-*s${EOC}|${GREEN}${BOLD}%-*s${EOC}|${RED}${BOLD}%-*s${EOC}|\n" \
-        $field1 "$1" $field2 "OK" $field3 "OK"
+        $field1 "$1" $field2 "OK" $field3 "KO"
 }
 print_error_compile() {
     columns=$(tput cols)
